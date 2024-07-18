@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data // Save에서 Data를 쓰지 않으면 form에서 저장이 되지 않는다!
+// Entity 만 Setter 조심하면 된다... Entity가 뭐징...
 public class AuthorSaveReqDto {
     private String name;
     private String email;

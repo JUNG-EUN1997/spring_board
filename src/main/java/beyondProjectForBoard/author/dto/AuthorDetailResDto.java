@@ -6,8 +6,9 @@ import lombok.*;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.time.LocalDateTime;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,6 +18,8 @@ public class AuthorDetailResDto {
     private String email;
     private String password;
     private Role role;
+    private int postCounts;
+    private LocalDateTime created_time;
 
     public AuthorDetailResDto detailFromEntity(Author author) {
         return AuthorDetailResDto.builder()
@@ -25,6 +28,8 @@ public class AuthorDetailResDto {
                 .email(author.getEmail())
                 .password(author.getPassword())
                 .role(author.getRole())
+                .postCounts(author.getPosts().size()) //이걸 쓸 수 있는 건 Author에 oneToMany가 걸려있어서
+                .created_time(author.getCreated_time())
                 .build();
     }
 }

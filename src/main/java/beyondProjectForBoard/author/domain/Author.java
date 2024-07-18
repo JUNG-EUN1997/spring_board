@@ -2,6 +2,7 @@ package beyondProjectForBoard.author.domain;
 
 import beyondProjectForBoard.author.dto.AuthorDetailResDto;
 import beyondProjectForBoard.author.dto.AuthorListResDto;
+import beyondProjectForBoard.common.BaseTimeEntity;
 import beyondProjectForBoard.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class Author extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,11 +37,6 @@ public class Author {
 
     @OneToMany(mappedBy = "author") // Post domain의 대상
     private List<Post> Posts;
-
-    @CreationTimestamp
-    private LocalDateTime created_time;
-    @UpdateTimestamp
-    private LocalDateTime updated_time;
 
 
     public Author(String name, String email, String password, Role role) {

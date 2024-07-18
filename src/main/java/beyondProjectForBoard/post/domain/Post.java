@@ -1,6 +1,7 @@
 package beyondProjectForBoard.post.domain;
 
 import beyondProjectForBoard.author.domain.Author;
+import beyondProjectForBoard.common.BaseTimeEntity;
 import beyondProjectForBoard.post.dto.PostDetailResDto;
 import beyondProjectForBoard.post.dto.PostListResDto;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,11 +35,6 @@ public class Post {
     private Author author;
 
 
-    @CreationTimestamp
-    private LocalDateTime created_time;
-    @UpdateTimestamp
-    private LocalDateTime updated_time;
-
     public Post(String title, String contents) {
 
     }
@@ -47,6 +43,7 @@ public class Post {
         PostListResDto postListResDto = PostListResDto.builder()
                 .id(this.id)
                 .title(this.title)
+//                .author(this.author) // 🚨 순환참조 이슈 발생
                 .author_email(this.author.getEmail())
                 .build();
         return postListResDto;
@@ -59,8 +56,8 @@ public class Post {
                 .title(this.title)
                 .contents(this.contents)
                 .author_email(this.author.getEmail())
-                .created_time(this.created_time)
-                .updated_time(this.updated_time)
+                .created_time(this.getCreated_time())
+                .updated_time(this.getUpdated_time())
                 .build();
         return postDetailResDto;
     }

@@ -2,7 +2,7 @@ package beyondProjectForBoard.author.dto;
 
 import lombok.*;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
