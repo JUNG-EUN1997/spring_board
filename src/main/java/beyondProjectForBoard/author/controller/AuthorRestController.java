@@ -3,10 +3,9 @@ package beyondProjectForBoard.author.controller;
 
 import beyondProjectForBoard.author.dto.AuthorDetailResDto;
 import beyondProjectForBoard.author.dto.AuthorListResDto;
-import beyondProjectForBoard.author.dto.AuthorReqDto;
+import beyondProjectForBoard.author.dto.AuthorSaveReqDto;
 import beyondProjectForBoard.author.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +23,19 @@ public class AuthorRestController {
     }
 
     @PostMapping("/create")
-    public String AuthorCreate(@RequestBody AuthorReqDto authorReqDto){
-        authorService.authorCreate(authorReqDto);
+    public String authorCreate(@RequestBody AuthorSaveReqDto dto){
+        authorService.authorCreate(dto);
         return "ok";
     }
 
     @GetMapping("/list")
-    public List<AuthorListResDto> AuthorList(){
+    public List<AuthorListResDto> authorList(){
         return authorService.authorList();
     }
 
     @GetMapping("/detail/{id}")
-    public AuthorDetailResDto AuthorDetail(@PathVariable(value="id") Long id){
+//    public AuthorDetailResDto authorDetail(@PathVariable(value="id") Long id){
+    public AuthorDetailResDto authorDetail(@PathVariable Long id){
         return authorService.authorDetail(id);
     }
 

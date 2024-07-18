@@ -1,13 +1,11 @@
 package beyondProjectForBoard.author.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AuthorListResDto {
     private Long id;
     private String name;

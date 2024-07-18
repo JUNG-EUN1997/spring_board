@@ -10,17 +10,22 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorReqDto {
+public class AuthorSaveReqDto {
     private String name;
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role; // 사용자가 String으로 요청해도 Role클래스로 자동 형변환
 
     public Author toEntity(){
-        return new Author(this.name,this.email,this.password,this.role);
+        Author author = Author.builder()
+                .password(this.password)
+                .name(this.name)
+                .email(this.email)
+                .role(this.role)
+                .build();
+        return author;
     }
 }
