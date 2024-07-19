@@ -6,9 +6,11 @@ import beyondProjectForBoard.post.domain.Post;
 import beyondProjectForBoard.post.dto.PostDetailResDto;
 import beyondProjectForBoard.post.dto.PostListResDto;
 import beyondProjectForBoard.post.dto.PostSaveReqDto;
+import beyondProjectForBoard.post.dto.PostUpdateReqDto;
 import beyondProjectForBoard.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -51,6 +53,25 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글 입니다."));
         PostDetailResDto postDetailResDto = post.detailFromEntity();
         return postDetailResDto;
+    }
+
+    public String postDelete(Long id){
+        postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글 입니다."));
+        try{
+            postRepository.deleteById(id);
+            return "ok";
+        }catch ( EntityNotFoundException e ){
+            return e.getMessage();
+        }
+    }
+
+    @Transactional
+    public String postUpdate(Long id, PostUpdateReqDto dto){
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글 입니다."));
+        post.updatePost(dto);
+
+        postRepository.save(post);
+        return "ok";
     }
 
 

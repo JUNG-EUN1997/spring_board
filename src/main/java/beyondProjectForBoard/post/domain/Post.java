@@ -4,16 +4,13 @@ import beyondProjectForBoard.author.domain.Author;
 import beyondProjectForBoard.common.BaseTimeEntity;
 import beyondProjectForBoard.post.dto.PostDetailResDto;
 import beyondProjectForBoard.post.dto.PostListResDto;
+import beyondProjectForBoard.post.dto.PostUpdateReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.ManyToAny;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -60,6 +57,11 @@ public class Post extends BaseTimeEntity {
                 .updated_time(this.getUpdated_time())
                 .build();
         return postDetailResDto;
+    }
+
+    public void updatePost(PostUpdateReqDto dto){
+        this.title = dto.getTitle();
+        this.contents = dto.getContents();
     }
 
 }

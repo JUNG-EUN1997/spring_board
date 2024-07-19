@@ -1,18 +1,15 @@
 package beyondProjectForBoard.author.domain;
 
-import beyondProjectForBoard.author.dto.AuthorDetailResDto;
 import beyondProjectForBoard.author.dto.AuthorListResDto;
+import beyondProjectForBoard.author.dto.AuthorUpdateReqDto;
 import beyondProjectForBoard.common.BaseTimeEntity;
 import beyondProjectForBoard.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -54,5 +51,14 @@ public class Author extends BaseTimeEntity {
                 .build();
         return authorListResDto;
     }
+
+    public void updateAuthor(AuthorUpdateReqDto dto) {
+        this.name = dto.getName();
+        this.password = dto.getPassword();
+        /*
+        * 원
+        * */
+    }
+
 }
 

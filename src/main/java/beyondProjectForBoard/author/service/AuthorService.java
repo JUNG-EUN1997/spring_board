@@ -4,6 +4,7 @@ import beyondProjectForBoard.author.domain.Author;
 import beyondProjectForBoard.author.dto.AuthorDetailResDto;
 import beyondProjectForBoard.author.dto.AuthorListResDto;
 import beyondProjectForBoard.author.dto.AuthorSaveReqDto;
+import beyondProjectForBoard.author.dto.AuthorUpdateReqDto;
 import beyondProjectForBoard.author.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,29 @@ public class AuthorService {
         Author author = authorRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("해당 email의 사용자는 없습니다."));
         return author;
+    }
+
+    @Transactional
+    public String authorDelete(Long id){
+        authorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 사용자는 없습니다."));
+        try{
+            authorRepository.deleteById(id);
+            return "ok";
+        }catch ( EntityNotFoundException e ){
+            return e.getMessage();
+        }
+    }
+
+    public String authorUpdate(Long id, AuthorUpdateReqDto dto){
+//         업데이트는 원본을 찾아야한다.
+//        그리고 원본을 수정해야한다!
+        Author author = authorRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("해당 사용자는 없습니다.")
+        );
+
+        author.updateAuthor(dto); // Author 객체 메모리 주소로 가서 직접 원본으로 가서 수정
+        authorRepository.save(author);
+        return "ok";
     }
 
 }

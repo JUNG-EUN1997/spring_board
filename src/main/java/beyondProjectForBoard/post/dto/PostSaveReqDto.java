@@ -2,14 +2,11 @@ package beyondProjectForBoard.post.dto;
 
 import beyondProjectForBoard.author.domain.Author;
 import beyondProjectForBoard.post.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
