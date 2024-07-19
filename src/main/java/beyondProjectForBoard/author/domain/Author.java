@@ -32,8 +32,12 @@ public class Author extends BaseTimeEntity {
     @Enumerated(EnumType.STRING) // 이걸 붙이지 않으면, Enum이 숫자인 0과 1로 만들어진다.
     private Role role;
 
-    @OneToMany(mappedBy = "author") // Post domain의 대상
-    private List<Post> Posts;
+//    일반적으로 부모엔티티(자식객체에 영향을 끼칠 수 있는 엔티티)에 cascade옵션 설정
+//    FK는 보통 자식에게 걸린다.
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL) // Post domain의 대상
+//     이렇게 설정하면, 회원 삭제 시, CASCASDE로 게시글도 함께 삭제된다
+
+    private List<Post> posts;
 
 
     public Author(String name, String email, String password, Role role) {

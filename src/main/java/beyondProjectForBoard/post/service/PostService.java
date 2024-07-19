@@ -41,7 +41,8 @@ public class PostService {
     }
 
     public List<PostListResDto> postList(){
-        List<Post> posts = postRepository.findAll();
+//        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllFetch(); // 이제 내가 만든 jpql을 걸겠다!
         List<PostListResDto> postListResDtos = new ArrayList<>();
         for (Post p : posts){
             postListResDtos.add(p.listFromEntity());

@@ -27,7 +27,8 @@ public class Post extends BaseTimeEntity {
     @Column(length = 3000)
     private String contents;
 
-    @ManyToOne
+//    연관관계의 주인은 fk가 있는 post
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
@@ -41,7 +42,7 @@ public class Post extends BaseTimeEntity {
                 .id(this.id)
                 .title(this.title)
 //                .author(this.author) // 🚨 순환참조 이슈 발생
-                .author_email(this.author.getEmail())
+                .author_email(this.author.getEmail()) // fetch 참조 발생
                 .build();
         return postListResDto;
     }

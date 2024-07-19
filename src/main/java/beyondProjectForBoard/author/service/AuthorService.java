@@ -6,6 +6,7 @@ import beyondProjectForBoard.author.dto.AuthorListResDto;
 import beyondProjectForBoard.author.dto.AuthorSaveReqDto;
 import beyondProjectForBoard.author.dto.AuthorUpdateReqDto;
 import beyondProjectForBoard.author.repository.AuthorRepository;
+import beyondProjectForBoard.post.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,19 @@ public class AuthorService {
         }
 
         Author author = dto.toEntity();
-        System.out.println(author);
+
+//        cascade persist 테스트. remove 테스트는 회원삭제로 대체
+        author.getPosts().add(Post.builder()
+                .title("가입인사")
+                .author(author)
+                .contents("안녕하세요. "+ dto.getName()+" 입니다.")
+                .build());
+        /*
+        .author(author)
+           생성되기 전 author 객체인데, Post 객체에서는 author의 id를 어떻게 갖고 builder를 할까?
+           코드상으로 선후관계를 생각하지 말자! Jpa에서 Entity 매니저가 영속성 컨텍스트로 알아서 맞춰준다!
+        * */
+
         authorRepository.save(author);
         return "ok";
     }
@@ -73,6 +86,7 @@ public class AuthorService {
         }
     }
 
+    @Transactional
     public String authorUpdate(Long id, AuthorUpdateReqDto dto){
 //         업데이트는 원본을 찾아야한다.
 //        그리고 원본을 수정해야한다!
@@ -81,7 +95,11 @@ public class AuthorService {
         );
 
         author.updateAuthor(dto); // Author 객체 메모리 주소로 가서 직접 원본으로 가서 수정
-        authorRepository.save(author);
+
+//        update코드에서는 save가 필수가 아니다,
+//        jpa가 특정 엔티티의 변경을 자동으로 인지하고 변경사항을 DB에 반영하는 것이 dirtychecking(변경감지)
+//              대신, @Transactional 반드시 붙어있어야 함 ⭐
+//        authorRepository.save(author);
         return "ok";
     }
 

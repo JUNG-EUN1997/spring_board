@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data // Save에서 Data를 쓰지 않으면 form에서 저장이 되지 않는다!
@@ -21,6 +23,7 @@ public class AuthorSaveReqDto {
                 .password(this.password)
                 .name(this.name)
                 .email(this.email)
+                .posts(new ArrayList<>())
                 .role(this.role)
                 .build();
         return author;
