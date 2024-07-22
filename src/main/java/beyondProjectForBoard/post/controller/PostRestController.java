@@ -1,9 +1,14 @@
 package beyondProjectForBoard.post.controller;
 
+import beyondProjectForBoard.post.dto.PostListResDto;
 import beyondProjectForBoard.post.dto.PostSaveReqDto;
 import beyondProjectForBoard.post.dto.PostUpdateReqDto;
 import beyondProjectForBoard.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +37,24 @@ public class PostRestController {
     }
 
     @GetMapping("/list")
-    public String postList(Model model){
-        model.addAttribute("postList", postService.postList());
+    public String postList(Model model,
+                           @PageableDefault(size=10, sort = "createdTime", direction = Sort.Direction.DESC )
+                           Pageable pageable){
+        model.addAttribute("postList", postService.postList(pageable));
         return "/post/post_list";
     }
+
+    @GetMapping("/list/page")
+    @ResponseBody
+//    Pageable 요청 방법 : localhost:8080/post/list/page?size=10&page=0
+//    public Page<List<PostListResDto>> postListPage(){
+    public Page<PostListResDto> postListPage(
+            @PageableDefault(size=10, sort = "createdTime", direction = Sort.Direction.DESC )
+            Pageable pageable){
+//        page 처리를 하려면, Page 객체로 감싸주면 된다.
+        return postService.postListPage(pageable);
+    }
+
 
     @GetMapping("/detail/{id}")
     public String postDetail(@PathVariable(value = "id") Long id, Model model){

@@ -9,12 +9,14 @@ import beyondProjectForBoard.post.dto.PostSaveReqDto;
 import beyondProjectForBoard.post.dto.PostUpdateReqDto;
 import beyondProjectForBoard.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class PostService {
@@ -35,20 +37,45 @@ public class PostService {
 //    jpa가 author객체에서 author_id를 찾아 db에는 author_id가 들어감
     public Post postCreate(PostSaveReqDto dto){
         Author author = authorService.authorFindByEmail(dto.getEmail());
-        Post post = dto.toEntity(author);
+        String appointment = null;
+        LocalDateTime appointmentTime = null;
+        if (dto.getAppointment().equals("Y") && !dto.getAppointmentTime().isEmpty()){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            appointmentTime = LocalDateTime.parse(dto.getAppointmentTime(), formatter);
+            LocalDateTime now = LocalDateTime.now();
+            if(appointmentTime.isBefore(now)){
+                throw new IllegalArgumentException("현재 시간보다 이전의 시간이 입력되었습니다.");
+            }
+        }
+        Post post = dto.toEntity(author, appointmentTime);
         postRepository.save(post);
         return post;
     }
 
-    public List<PostListResDto> postList(){
+    public Page<PostListResDto> postList(Pageable pageable){
 //        List<Post> posts = postRepository.findAll();
-        List<Post> posts = postRepository.findAllFetch(); // 이제 내가 만든 jpql을 걸겠다!
-        List<PostListResDto> postListResDtos = new ArrayList<>();
-        for (Post p : posts){
-            postListResDtos.add(p.listFromEntity());
-        }
+//        List<Post> posts = postRepository.findAllFetch(); // 이제 내가 만든 jpql을 걸겠다!
+//        List<PostListResDto> postListResDtos = new ArrayList<>();
+//        for (Post p : posts){
+//            postListResDtos.add(p.listFromEntity());
+//        }
+//        Page<Post> posts =  postRepository.findAll(pageable);
+        Page<Post> posts =  postRepository.findAllByAppointment(pageable, "N");
+//        Page<Post> posts =  postRepository.findByAppointment(pageable, "N");
+        Page<PostListResDto> postListResDtos = posts.map(a->a.listFromEntity());
+
         return postListResDtos;
     }
+
+//    public Page<PostListResDto> postListPage(){ // 페이지 자체가 List라, List 제외해도 된다.
+    public Page<PostListResDto> postListPage(Pageable pageable){
+        Page<Post> posts =  postRepository.findAll(pageable);
+        Page<PostListResDto> postListResDtos = posts.map(a->a.listFromEntity());
+
+        return postListResDtos;
+    }
+
+
 
     public PostDetailResDto postDetail(Long id){
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글 입니다."));
