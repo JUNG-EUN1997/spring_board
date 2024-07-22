@@ -69,4 +69,8 @@ public class Post extends BaseTimeEntity {
         this.contents = dto.getContents();
     }
 
+    public void updateAppointment(String yn) {
+        this.appointment = yn;
+    }
+
 }
