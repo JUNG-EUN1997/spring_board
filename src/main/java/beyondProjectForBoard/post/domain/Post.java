@@ -54,8 +54,8 @@ public class Post extends BaseTimeEntity {
                 .title(this.title)
                 .contents(this.contents)
                 .author_email(this.author.getEmail())
-                .created_time(this.getCreated_time())
-                .updated_time(this.getUpdated_time())
+                .createdTime(this.getCreatedTime())
+                .updatedTime(this.getUpdatedTime())
                 .build();
         return postDetailResDto;
     }

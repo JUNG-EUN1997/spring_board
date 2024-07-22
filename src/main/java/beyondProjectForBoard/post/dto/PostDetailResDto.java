@@ -1,8 +1,10 @@
 package beyondProjectForBoard.post.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,6 +16,6 @@ public class PostDetailResDto {
     private String title;
     private String contents;
     private String author_email;
-    private LocalDateTime created_time;
-    private LocalDateTime updated_time;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }

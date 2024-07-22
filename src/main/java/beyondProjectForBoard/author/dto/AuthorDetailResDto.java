@@ -2,10 +2,11 @@ package beyondProjectForBoard.author.dto;
 
 import beyondProjectForBoard.author.domain.Author;
 import beyondProjectForBoard.author.domain.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,7 +20,7 @@ public class AuthorDetailResDto {
     private String password;
     private Role role;
     private int postCounts;
-    private LocalDateTime created_time;
+    private LocalDateTime createdTime;
 
     public AuthorDetailResDto detailFromEntity(Author author) {
         return AuthorDetailResDto.builder()
@@ -29,7 +30,7 @@ public class AuthorDetailResDto {
                 .password(author.getPassword())
                 .role(author.getRole())
                 .postCounts(author.getPosts().size()) //이걸 쓸 수 있는 건 Author에 oneToMany가 걸려있어서
-                .created_time(author.getCreated_time())
+                .createdTime(author.getCreatedTime())
                 .build();
     }
 }
