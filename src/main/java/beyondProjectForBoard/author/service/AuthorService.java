@@ -29,9 +29,12 @@ public class AuthorService {
     }
 
     @Transactional
-    public String authorCreate(AuthorSaveReqDto dto){
+    public Author authorCreate(AuthorSaveReqDto dto){
         if(authorRepository.findByEmail(dto.getEmail()).isPresent()){
             throw new IllegalArgumentException("이미 존재하는 email 입니다.");
+        }
+        if(dto.getPassword().length() < 4){
+            throw new IllegalArgumentException("비밀번호가 너무 짧습니다!");
         }
 
         Author author = dto.toEntity();
@@ -48,8 +51,8 @@ public class AuthorService {
            코드상으로 선후관계를 생각하지 말자! Jpa에서 Entity 매니저가 영속성 컨텍스트로 알아서 맞춰준다!
         * */
 
-        authorRepository.save(author);
-        return "ok";
+
+        return authorRepository.save(author);
     }
 
     public List<AuthorListResDto> authorList(){
