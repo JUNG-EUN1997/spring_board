@@ -4,18 +4,20 @@ import beyondProjectForBoard.post.dto.PostListResDto;
 import beyondProjectForBoard.post.dto.PostSaveReqDto;
 import beyondProjectForBoard.post.dto.PostUpdateReqDto;
 import beyondProjectForBoard.post.service.PostService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Service
+@Controller
 //@RestController // RestBody 전체
 @RequestMapping("/post")
+@Slf4j
 public class PostRestController {
     private final PostService postService;
 
@@ -58,6 +60,9 @@ public class PostRestController {
 
     @GetMapping("/detail/{id}")
     public String postDetail(@PathVariable(value = "id") Long id, Model model){
+//        log.info("method명 : postDetail");
+//        log.info("get요청의 parameter : "+id);
+
         model.addAttribute("post",postService.postDetail(id));
         return "/post/post_detail";
     }
