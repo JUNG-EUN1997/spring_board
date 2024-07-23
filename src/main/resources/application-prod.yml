@@ -1,0 +1,29 @@
+
+server:
+  port: 8081
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/board
+    username: root
+    password: 1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show_sql: true
+logging:
+  level:
+#    로그레벨 : trace < debug < info < error 순서의 로그 레벨을 가짐
+#    즉, info로 설정 시, trace, debug 로그는 출력되지 않음
+#    운영의 로그는 일반적으로 info로 되어있음. 로그레벨 이상의 로그만 실행이 되도록 설정이 되어있음
+    root: info # ⭐ 운영레벨에는, 삭제
+  # 로그파일 경로와 파일명 지정
+  file:
+    name: logs/app.log
