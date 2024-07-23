@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!-- 콘솔 로그 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} %logger{36}-%msg%n</pattern>
+<!--            yyyy-MM-dd HH:mm  >> console에 표시되는 시간 패턴
+                %logger{36} >> 로거의 이름(클래스명) 을 최대 36자 까지만 출력
+                %msg%n >> 로그메시지를 출력하고 마지막 끝에서 줄바꿈
+            -->
+        </encoder>
+    </appender>
+    <!--  -->
+<!-- 일반 로그 파일 설정 -->
+<!--    로그설정에서, 롤링이라는 것은 날짜 변경에 따라 별도의 파일을 생성하는 것-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} %logger{36}-%msg%n</pattern>
+        </encoder>
+        <file>logs/app.log</file> <!-- 파일명 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!-- 시간베이스로 규정하여 파일을 생성한다 -->
+            <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern> <!-- 파일명 패턴 -->
+            <maxHistory>10</maxHistory> <!-- 최대 저장일 : 10일 / 자정기준 -->
+        </rollingPolicy>
+    </appender>
+
+<!-- 에러 로그 파일 설정 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} %logger{36}-%msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"> <!-- 필터링을 하겠다 -->
+            <level>error</level> <!-- 필터링 레벨은 error 이상만 -->
+            <onMatch>ACCEPT</onMatch> <!-- 맞으면 받아들인다 -->
+            <onMismatch>DENY</onMismatch> <!-- 틀리면 걸러내겠다 -->
+        </filter>
+        <file>logs/app-error.log</file> <!-- 파일명 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!-- 시간베이스로 규정하여 파일을 생성한다 -->
+            <fileNamePattern>logs/app-error.%d{yyyy-MM-dd}.log</fileNamePattern> <!-- 파일명 패턴 -->
+            <maxHistory>10</maxHistory> <!-- 최대 저장일 : 10일 / 자정기준 -->
+        </rollingPolicy>
+    </appender>
+
+<!-- 로그 레벨 관련 설정 -->
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>
