@@ -33,6 +33,11 @@ dependencies {
 
 //	batch 의존성 추가 : 240722
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+//	로그인관련 시큐리티 의존성 추가 : 240723
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	타임리프에서 시큐리티 문법을 쓰기위한 라이브러리
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 }
 
 tasks.named('test') {
